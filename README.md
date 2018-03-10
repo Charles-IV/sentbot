@@ -22,6 +22,8 @@ Copy `discord-details-template.txt` to `discord-details.txt`. Or rename it, but 
 
 Edit `discord-details.txt` appropietly. If you only want one admin, remove `OtherName#0000` and the comma. If you add admin (you can technically have infinite), just add `,OtherAdminName#0000` to the end of line 3. _Make sure there are no spaces!_ This may seem obvious, but I knew this, but made the mistake and spent ages trying to fix it.
 
+Remember if an admin changes their discord name, you will need to edit the file.
+
 You can edit and save this file while the bot is still running - no nead to restart it! (this will be a lifesaver until I figure out save/restore)
 
 Then run it (linux - `python3 sentbot1-discord.py`) and your bot should go online. Be sure to credit me and @SatanicBanana - remember that he gave me the code and let me upload it, and I'm making the code public.
