@@ -1,0 +1,4 @@
+BotName#0000
+BotToken
+YourName#0000
+OtherName#0000
