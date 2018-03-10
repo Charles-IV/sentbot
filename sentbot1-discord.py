@@ -288,7 +288,24 @@ def determinePersonality(message):
 
         #Then return it.
         return personalities[-1]
+    
+# load discord bot details
+def loadDetails():
+    try:
+        f = open("discord-details.txt", "r")
+    except IOError:  # if file doesn't exist
+        print("ERROR:\ndiscord-details.txt not found.\nPlease generate form discord-details-template.txt")
+        exit()
+    
+    botName = f.readline().strip('\n')
+    token = f.readline().strip('\n')  # if I remember correctly, this auto-reads the next line
 
+    admins = f.readline().split(',')
+    admins[-1] = admins[-1].strip('\n')
+    
+    return botName, token, admins
+
+    
 
 client = discord.Client()
 
@@ -301,12 +318,13 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    botName, token, admins = loadDetails()  # update details on every message
     try:
-        if str(message.author) != "BotName#0000":
+        if str(message.author) != botName:
             per = determinePersonality(message)
             if not per.debugging:
                 if message.content == "LIST_WORDS":
-                    if str(message.author) == "OwnerName#0000":
+                    if str(message.author) in admins:
                         stro = "ALL_WORDS\n\n"
                         for word in per.dictionary:
                             stro += "(" + str(len(word.prev)) + ") " + word.text + " (" + str(len(word.next)) + ")\n"
@@ -315,28 +333,28 @@ async def on_message(message):
                     else:
                         await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author) + "\" IS NOT AUTHORISED TO ACCESS DEBUGGING COMMANDS")
                 elif message.content == "DEBUG_MODE":
-                    if str(message.author) == "OwnerName#0000":
+                    if str(message.author) in admins:
                         per.debugging = True
                         await client.send_message(message.channel, "DEBUG_MODE: " + ("ON" if per.debugging else "OFF"))
                     else:
                         await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author) + "\" IS NOT AUTHORISED TO ACCESS DEBUGGING COMMANDS")
 
                 elif message.content == "SHUTDOWN":
-                    if str(message.author) == "OwnerName#0000":
+                    if str(message.author) in admins:
                         await client.send_message(message.channel, ":wave:")
                         os._exit(1)
                     else:
                         await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author) + "\" IS NOT AUTHORISED TO ACCESS DEBUGGING COMMANDS")
 
                 elif message.content == "CLEAR_DICTIONARY":
-                    if str(message.author) == "OwnerName#0000":
+                    if str(message.author) in admins:
                         per.dictionary = []
                         await client.send_message(message.channel, "DICTIONARY CLEARED")
                     else:
                         await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author) + "\" IS NOT AUTHORISED TO ACCESS DEBUGGING COMMANDS")
 
                 elif message.content == "DUMP_STATS":
-                    if str(message.author) == "OwnerName#0000":
+                    if str(message.author) in admins:
                         stri = "FULL STAT LIST\n\n"
                         await client.send_message(message.channel, stri + str(per.stackSize) + "\n" + str(per.deathCount) + "\n" + str(per.iterations) + "\n" + str(per.averaging) + "\n" + str(per.minimumScore) + "\n\n" + str(per.averageSentenceLength))
                     else:
@@ -355,7 +373,7 @@ async def on_message(message):
                     else:
                         await client.send_message(message.channel, "FATAL_ERROR:\nBOT-TYPE 'SENTBOT' DOES NOT WORK IN DIRECT MESSAGING ENVIRONMENTS")
             else:
-                if str(message.author) == "OwnerName#0000":
+                if str(message.author) in admins:
                     if "stackSize=" in message.content:
                         per.stackSize = int(message.content.split(" ")[1])
                         await client.send_message(message.channel, "STACK_SIZE CHANGED TO " + str(per.stackSize))
@@ -380,4 +398,6 @@ async def on_message(message):
     except:
         x = 1
 
-client.run('token')
+botName, token, admins = loadDetails()  # this should fetch all the details
+        
+client.run(token)
