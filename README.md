@@ -18,15 +18,13 @@ e.g. on linux - `python3 sentbot1.py` from the same directory.
 
 To run it as a discord bot, you need to create a bot app at https://discordapp.com/developers/applications/me
 
-Replace the `token` in `client.run('token')` (on the last line) with your token. (Google it)
+Copy `discord-details-template.txt` to `discord-details.txt`. Or rename it, but that may make git pulling hard in future.
 
-Then replace `BotName#0000` (on line 305 - at time of writing) with your bots username. Make sure you keep the `"` on either side.
+Edit `discord-details.txt` appropietly. If you only want one admin, remove `OtherName#0000` and the comma. If you add admin (you can technically have infinite), just add `,OtherAdminName#0000` to the end of line 3. _Make sure there are no spaces!_ This may seem obvious, but I knew this, but made the mistake and spent ages trying to fix it.
 
-Then replace all occurences of `OwnerName#0000` with the username of the user with admin rights of the bot.
+You can edit and save this file while the bot is still running - no nead to restart it! (this will be a lifesaver until I figure out save/restore)
 
 Then run it (linux - `python3 sentbot1-discord.py`) and your bot should go online. Be sure to credit me and @SatanicBanana - remember that he gave me the code and let me upload it, and I'm making the code public.
-
-Don't worry, I intend to make this simpler - soon you may be able to paste them into a .gitignore'd file, and maybe even have multiple admins.
 
 ## Commands
 
