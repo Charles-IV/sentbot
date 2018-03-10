@@ -297,9 +297,9 @@ def loadDetails():
         print("ERROR:\ndiscord-details.txt not found.\nPlease generate form discord-details-template.txt")
         exit()
     
-    botName = f.readline()
-    token = f.readline()  # if I remember correctly, this auto-reads the next line
-    ownerName = f.readline()  # for now only support 1 admin - until I think of an algorithm
+    botName = f.readline().strip('\n')
+    token = f.readline().strip('\n')  # if I remember correctly, this auto-reads the next line
+    ownerName = f.readline().strip('\n')  # for now only support 1 admin - until I think of an algorithm
     
     return botName, token, ownerName
 
