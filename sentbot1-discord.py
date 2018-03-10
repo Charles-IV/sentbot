@@ -318,7 +318,7 @@ async def on_ready():
 async def on_message(message):
     botName, token, ownerName = loadDetails()  # update details on every message
     try:
-        if str(message.author) != botName":
+        if str(message.author) != botName:
             per = determinePersonality(message)
             if not per.debugging:
                 if message.content == "LIST_WORDS":
