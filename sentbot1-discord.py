@@ -294,7 +294,7 @@ def loadDetails():
     try:
         f = open("discord-details.txt", "r")
     except IOError:  # if file doesn't exist
-        print("ERROR:\Ndiscord-details.txt not found.\nPlease generate form discord-details-template.txt")
+        print("ERROR:\ndiscord-details.txt not found.\nPlease generate form discord-details-template.txt")
         exit()
     
     botName = f.readline()
