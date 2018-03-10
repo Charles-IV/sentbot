@@ -34,6 +34,6 @@ Don't worry, I intend to make this simpler - soon you may be able to paste them 
 
 Currently, there are no commands for the command line version, although when I get round to being able to save the dictionary, that and restoring will probably be the only ones.
 
-## Discord bot
+### Discord bot
 
 There are loads. When I understand them, I'm begin documenting them. (or you could make a pr?!)
