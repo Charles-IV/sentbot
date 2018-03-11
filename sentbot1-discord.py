@@ -13,8 +13,9 @@ init(autoreset=False)
 personalities = []
 
 class Personality:
-    def __init__(self, dictionary, server, stackSize, deathCount, iterations, averaging, minimumScore):
+    def __init__(self, dictionary, channel, server, stackSize, deathCount, iterations, averaging, minimumScore):
         self.dictionary = dictionary #This is not the dictionary variable. It is a path relating to the file it is stored in.
+        self.channel = channel  # the channel ID the bot's in - this will determine personalities
         self.server = server #The name of the server that the certain personality is in.
         self.stackSize = stackSize #The size of the populations used in the genetic algorithm. Less population = faster response.
         self.deathCount = deathCount #The amount of sentences that will die in each iteration.
@@ -266,7 +267,7 @@ def createPhrase(p):
 def determinePersonality(message):
     #If it exists, return it.
     for p in personalities:
-        if message.server == p.server:
+        if message.channel.id == p.channel:
             return p
 
     #If it's a DM, tell me to return an error later
@@ -277,6 +278,7 @@ def determinePersonality(message):
         personalities.append(
             Personality(
                 [],
+                message.channel.id,
                 message.server,
                 30,
                 15,
