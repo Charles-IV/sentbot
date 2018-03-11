@@ -269,9 +269,9 @@ def determinePersonality(message):
         if message.server == p.server:
             return p
 
-    #If it's a DM, fuck it.
+    #If it's a DM, tell me to return an error later
     if message.server == None:
-        return None
+        return "dm"
     #If it doesn't exist, make it.
     else:
         personalities.append(
@@ -322,7 +322,9 @@ async def on_message(message):
     try:
         if str(message.author) != botName:
             per = determinePersonality(message)
-            if not per.debugging:
+            if per == "dm":  # if it's a DM
+                await client.send_message(message.author, "FATAL_ERROR:\nDM's ARE UNSUPPORTED")
+            elif not per.debugging:
                 if message.content == "LIST_WORDS":
                     if str(message.author) in admins:
                         stro = "ALL_WORDS\n\n"
