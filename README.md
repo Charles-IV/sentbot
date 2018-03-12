@@ -28,6 +28,8 @@ You can edit and save this file while the bot is still running - no nead to rest
 
 Then run it (linux - `python3 sentbot1-discord.py`) and your bot should go online. Be sure to credit me and @SatanicBanana - remember that he gave me the code and let me upload it, and I'm making the code public.
 
+The bot currently has different personalities (word sets) in each channel. To change this, run `SERVER_MODE`. To change it back again, run `CHANNEL_MODE`.
+
 ## Commands
 
 ### Command line
