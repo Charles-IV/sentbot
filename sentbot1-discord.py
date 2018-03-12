@@ -13,10 +13,11 @@ init(autoreset=False)
 personalities = []
 
 class Personality:
-    def __init__(self, dictionary, channel, server, stackSize, deathCount, iterations, averaging, minimumScore):
+    def __init__(self, dictionary, channel, server, serverMode, stackSize, deathCount, iterations, averaging, minimumScore):
         self.dictionary = dictionary #This is not the dictionary variable. It is a path relating to the file it is stored in.
         self.channel = channel  # the channel ID the bot's in - this will determine personalities
         self.server = server #The name of the server that the certain personality is in.
+        self.serverMode = serverMode  # whether servers are used for personalities or not
         self.stackSize = stackSize #The size of the populations used in the genetic algorithm. Less population = faster response.
         self.deathCount = deathCount #The amount of sentences that will die in each iteration.
         self.iterations = iterations #The amount of iterations.
@@ -267,8 +268,12 @@ def createPhrase(p):
 def determinePersonality(message):
     #If it exists, return it.
     for p in personalities:
-        if message.channel.id == p.channel:
-            return p
+        if p.serverMode:  # if in server mode
+            if message.server == p.server:
+                return p
+        elif not p.serverMode:  # if in channel mode
+            if message.channel.id == p.channel:
+                return p
 
     #If it's a DM, tell me to return an error later
     if message.server == None:
@@ -280,6 +285,7 @@ def determinePersonality(message):
                 [],
                 message.channel.id,
                 message.server,
+                False,
                 30,
                 15,
                 10,
@@ -363,8 +369,22 @@ async def on_message(message):
                         await client.send_message(message.channel, stri + str(per.stackSize) + "\n" + str(per.deathCount) + "\n" + str(per.iterations) + "\n" + str(per.averaging) + "\n" + str(per.minimumScore) + "\n\n" + str(per.averageSentenceLength))
                     else:
                         await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author) + "\" IS NOT AUTHORISED TO ACCESS DEBUGGING COMMANDS")
+                
+                elif message.content == "CHANNEL_MODE":
+                    if str(message.author) in admins:
+                        per.serverMode = False
+                        await client.send_message(message.channel, "CHANNEL MODE ACTIVE")
+                    else:
+                        await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author) + "\" IS NOT AUTHORISED TO ACCESS DEBUGGING COMMANDS")
+                        
+                elif message.content == "SERVER_MODE":
+                    if str(message.author) in admins:
+                        per.serverMode = True
+                        await client.send_message(message.channel, "SERVER MODE ACTIVE")
+                    else:
+                        await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author) + "\" IS NOT AUTHORISED TO ACCESS DEBUGGING COMMANDS")
 
-
+                        
                 else:
                     await client.send_typing(message.channel)
                     per = determinePersonality(message)
