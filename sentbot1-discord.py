@@ -25,8 +25,6 @@ class Personality:
         self.minimumScore = minimumScore #If the score of the sentence goes over a certain threshold, it will automatically be chosen. (-1 = do not use)
         self.staff = staff  # the staff that can run admin commands on that server only
 
-        self.debugging = False #While debugging, messages are printed to the server, and settings can be changed.
-
         # Data items.
         self.sentenceLengths = [5]
         self.averageSentenceLength = 5
@@ -330,83 +328,57 @@ async def on_ready():
 async def on_message(message):
     botName, token, admins = loadDetails()  # update details on every message
     try:
-        if str(message.author) != botName:
-            per = determinePersonality(message)
-            if per == "dm":  # if it's a DM
-                await client.send_message(message.author, "FATAL_ERROR:\nDM's ARE UNSUPPORTED")
-            elif not per.debugging:
-                if message.content == "LIST_WORDS" or str(message.author) in per.staff:
-                    if str(message.author) in admins:
-                        stro = "ALL_WORDS\n\n"
-                        for word in per.dictionary:
-                            stro += "(" + str(len(word.prev)) + ") " + word.text + " (" + str(len(word.next)) + ")\n"
-
-                        await client.send_message(message.channel, stro)
-                    else:
-                        await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author) + "\" IS NOT AUTHORISED TO ACCESS DEBUGGING COMMANDS")
-                elif message.content == "DEBUG_MODE" or str(message.author) in per.staff:
-                    if str(message.author) in admins:
-                        per.debugging = True
-                        await client.send_message(message.channel, "DEBUG_MODE: " + ("ON" if per.debugging else "OFF"))
-                    else:
-                        await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author) + "\" IS NOT AUTHORISED TO ACCESS DEBUGGING COMMANDS")
-
-                elif message.content == "SHUTDOWN":
-                    if str(message.author) in admins:  # must be admin
+        per = determinePersonality(message)
+        if str(message.author) == botName:
+            return  # do nothing - so i dont have to put it all in if str(message.author) != botName:
+        elif per == "dm":  # if it's a DM
+            await client.send_message(message.author, "FATAL_ERROR:\nDM's ARE UNSUPPORTED")
+            
+        else:
+            if message.content.startswith("a>"):  # prefix for admin commands
+                if str(message.author) in admins:
+                    if message.content == "a>SHUTDOWN":
                         await client.send_message(message.channel, ":wave:")
                         os._exit(1)
-                    else:
-                        await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author) + "\" IS NOT AUTHORISED TO ACCESS SERVER ADMINISTRATION COMMANDS")
-
-                elif message.content == "CLEAR_DICTIONARY":
-                    if str(message.author) in admins or str(message.author) in per.staff:
-                        per.dictionary = []
-                        await client.send_message(message.channel, "DICTIONARY CLEARED")
-                    else:
-                        await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author) + "\" IS NOT AUTHORISED TO ACCESS DEBUGGING COMMANDS")
-
-                elif message.content == "DUMP_STATS":
-                    if str(message.author) in admins or str(message.author) in per.staff:
-                        stri = "FULL STAT LIST\n\n"
-                        await client.send_message(message.channel, stri + str(per.stackSize) + "\n" + str(per.deathCount) + "\n" + str(per.iterations) + "\n" + str(per.averaging) + "\n" + str(per.minimumScore) + "\n\n" + str(per.averageSentenceLength))
-                    else:
-                        await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author) + "\" IS NOT AUTHORISED TO ACCESS DEBUGGING COMMANDS")
-                
-                elif message.content == "CHANNEL_MODE":
-                    if str(message.author) in admins or str(message.author) in per.staff:
-                        per.serverMode = False
-                        await client.send_message(message.channel, "CHANNEL MODE ACTIVE")
-                    else:
-                        await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author) + "\" IS NOT AUTHORISED TO ACCESS DEBUGGING COMMANDS")
-                        
-                elif message.content == "SERVER_MODE" or str(message.author) in per.staff:
-                    if str(message.author) in admins:
-                        per.serverMode = True
-                        await client.send_message(message.channel, "SERVER MODE ACTIVE")
-                    else:
-                        await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author) + "\" IS NOT AUTHORISED TO ACCESS DEBUGGING COMMANDS")
-
-                elif "STAFF_ADD" in message.content:
-                    if str(message.author) in admins:  # must be admin, not staff
+                    
+                    elif "STAFF_ADD" in message.content:
                         newStaff = str(message.content.split(" ", 1)[1])
                         per.staff.append(newStaff)
                         await client.send_message(message.channel, newStaff + " added to staff list")
-                    else:
-                        await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author) + "\" IS NOT AUTHORISED TO ACCESS SERVER ADMINISTRATION COMMANDS")
-                        
                         
                 else:
-                    await client.send_typing(message.channel)
-                    per = determinePersonality(message)
-                    if per != None:
-                        if testIfOkay(message.content):
-                            getInput(per, message.content)
-                            await client.send_message(message.channel, createPhrase(per))
-                        else:
-                            await client.send_message(message.channel, "FATAL_ERROR:\nBOT-TYPE 'SENTBOT' DOES NOT WORK WITH NON-ASCII CHARACTERS")
-                    else:
-                        await client.send_message(message.channel, "FATAL_ERROR:\nBOT-TYPE 'SENTBOT' DOES NOT WORK IN DIRECT MESSAGING ENVIRONMENTS")
-            else:
+                    await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author) + "\" IS NOT AUTHORISED TO ACCESS SERVER ADMINISTRATION COMMANDS")
+                    
+                    
+            elif message.content.startswith(">"):  # prefix for standard commands
+                if str(message.author) in admins or str(message.author) in per.staff:
+                    if message.content == ">LIST_WORDS":
+                        stro = "ALL_WORDS\n\n"
+                        for word in per.dictionary:
+                            stro += "(" + str(len(word.prev)) + ") " + word.text + " (" + str(len(word.next)) + ")\n"
+                        await client.send_message(message.channel, stro)
+                        
+                    elif message.content == ">CLEAR_DICTIONARY":
+                        per.dictionary = []
+                        await client.send_message(message.channel, "DICTIONARY CLEARED")
+                        
+                    elif message.content == ">DUMP_STATS":
+                        stri = "FULL STAT LIST\n\n"
+                        await client.send_message(message.channel, stri + str(per.stackSize) + "\n" + str(per.deathCount) + "\n" + str(per.iterations) + "\n" + str(per.averaging) + "\n" + str(per.minimumScore) + "\n\n" + str(per.averageSentenceLength))
+                        
+                    elif message.content == ">CHANNEL_MODE":
+                        per.serverMode = False
+                        await client.send_message(message.channel, "CHANNEL MODE ACTIVE")     
+                        
+                    elif message.content == ">SERVER_MODE":
+                        per.serverMode = True
+                        await client.send_message(message.channel, "SERVER MODE ACTIVE")
+                        
+                else:
+                    await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author) + "\" IS NOT AUTHORISED TO ACCESS COMMANDS")
+                    
+                    
+            elif message.content.startswith("d>"):  # prefix for debugging commands
                 if str(message.author) in admins or str(message.author) in per.staff:
                     if "stackSize=" in message.content:
                         per.stackSize = int(message.content.split(" ")[1])
@@ -423,14 +395,26 @@ async def on_message(message):
                     if "minimumScore=" in message.content:
                         per.minimumScore = int(message.content.split(" ")[1])
                         await client.send_message(message.channel, "minimum_SCORE CHANGED TO " + str(per.minimumScore))
-
-                    if message.content == "DEBUG_MODE":
-                        per.debugging = False
-                        await client.send_message(message.channel, "DEBUG_MODE: " + "ON" if per.debugging else "OFF")
+                
                 else:
                     await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author) + "\" IS NOT AUTHORISED TO EXECUTE DEBUG COMMANDS")
+            
+            
+            else:  # standard text
+                await client.send_typing(message.channel)
+                per = determinePersonality(message)
+                if per != None:
+                    if testIfOkay(message.content):
+                        getInput(per, message.content)
+                        await client.send_message(message.channel, createPhrase(per))
+                    else:
+                        await client.send_message(message.channel, "FATAL_ERROR:\nBOT-TYPE 'SENTBOT' DOES NOT WORK WITH NON-ASCII CHARACTERS")
+                else:
+                    await client.send_message(message.channel, "FATAL_ERROR:\nBOT-TYPE 'SENTBOT' DOES NOT WORK IN DIRECT MESSAGING ENVIRONMENTS")
+                        
+
     except:
-        x = 1
+        print("FATAL_ERROR:\nUNKNOWN")
 
 botName, token, admins = loadDetails()  # this should fetch all the details
         
