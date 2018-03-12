@@ -1,6 +1,8 @@
 # SentBot is a genetic algorithm that learns how sentences are constructed by obtaining sample sentences, and running
 # genetic simulations to produce the most accurate results possible.
 
+# i don't actually want to be associated with this project, really. it's kinda bad :^) -satanicbanana
+
 import random
 import time
 import os
@@ -326,78 +328,87 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    messageContent = message.content #editable message content block
+    commandMode = -1 # determines the command being used. If it is not a command, the mode is -1.
+    prefixes = [".", "!", "$"]
+    for i in range(0, len(prefixes): #iterate through each item in the prefix group until you hit the one it is (or not) 
+        if messageContent.startswith(prefixes[i]):
+            commandMode = i # set the command mode
+            messageContent = messageContent.lstrip(prefixes[i]) # remove the command prefix from the command
+            break # we don't need to iterate any more
+                   
     botName, token, admins = loadDetails()  # update details on every message
     try:
         per = determinePersonality(message)
         if str(message.author) == botName:
             return  # do nothing - so i dont have to put it all in if str(message.author) != botName:
         elif per == "dm":  # if it's a DM
-            await client.send_message(message.author, "FATAL_ERROR:\nDM's ARE UNSUPPORTED")
-            
+            await client.send_message(message.author.mention, "FATAL_ERROR:\nDM's ARE UNSUPPORTED")
+            # they don't have to be :^) just use the user ID
         else:
-            if message.content.startswith("a>"):  # prefix for admin commands
+            if commandMode == 2:
                 if str(message.author) in admins:
-                    if message.content == "a>SHUTDOWN":
+                    if messageContent == "SHUTDOWN":
                         await client.send_message(message.channel, ":wave:")
                         os._exit(1)
                     
-                    elif "STAFF_ADD" in message.content:
-                        newStaff = str(message.content.split(" ", 1)[1])
+                    elif messageContent.startswith("STAFF_ADD"): # this just makes sure that we don't have '$abababa STAFF_ADD AASASA' adding "STAFF_ADD AASASA" to the staff list 
+                        newStaff = str(messageContent.split(" ", 1)[1])
                         per.staff.append(newStaff)
                         await client.send_message(message.channel, newStaff + " added to staff list")
                         
                 else:
-                    await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author) + "\" IS NOT AUTHORISED TO ACCESS SERVER ADMINISTRATION COMMANDS")
+                    await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author.mention) + "\" IS NOT AUTHORISED TO ACCESS SERVER ADMINISTRATION COMMANDS")
                     
                     
-            elif message.content.startswith(">"):  # prefix for standard commands
+            # WHY DO YOU HAVE ORDERING OF 2 -> 0 -> 1 :ANGERY:
+            elif commandMode == 0:
                 if str(message.author) in admins or str(message.author) in per.staff:
-                    if message.content == ">LIST_WORDS":
+                    if messageContent == "LIST_WORDS":
                         stro = "ALL_WORDS\n\n"
                         for word in per.dictionary:
                             stro += "(" + str(len(word.prev)) + ") " + word.text + " (" + str(len(word.next)) + ")\n"
                         await client.send_message(message.channel, stro)
                         
-                    elif message.content == ">CLEAR_DICTIONARY":
+                    elif messageContent == "CLEAR_DICTIONARY":
                         per.dictionary = []
                         await client.send_message(message.channel, "DICTIONARY CLEARED")
                         
-                    elif message.content == ">DUMP_STATS":
+                    elif messageContent == "DUMP_STATS":
                         stri = "FULL STAT LIST\n\n"
                         await client.send_message(message.channel, stri + str(per.stackSize) + "\n" + str(per.deathCount) + "\n" + str(per.iterations) + "\n" + str(per.averaging) + "\n" + str(per.minimumScore) + "\n\n" + str(per.averageSentenceLength))
                         
-                    elif message.content == ">CHANNEL_MODE":
+                    elif messageContent == "CHANNEL_MODE":
                         per.serverMode = False
                         await client.send_message(message.channel, "CHANNEL MODE ACTIVE")     
                         
-                    elif message.content == ">SERVER_MODE":
+                    elif messageContent == "SERVER_MODE":
                         per.serverMode = True
                         await client.send_message(message.channel, "SERVER MODE ACTIVE")
                         
                 else:
-                    await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author) + "\" IS NOT AUTHORISED TO ACCESS COMMANDS")
+                    await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author.mention) + "\" IS NOT AUTHORISED TO ACCESS COMMANDS")
                     
-                    
-            elif message.content.startswith("d>"):  # prefix for debugging commands
+            elif commandMode == 1:
                 if str(message.author) in admins or str(message.author) in per.staff:
-                    if "stackSize=" in message.content:
-                        per.stackSize = int(message.content.split(" ")[1])
+                    if "stackSize=" in messageContent:
+                        per.stackSize = int(messageContent.split(" ")[1])
                         await client.send_message(message.channel, "STACK_SIZE CHANGED TO " + str(per.stackSize))
-                    if "deathCount=" in message.content:
-                        per.deathCount = int(message.content.split(" ")[1])
+                    if "deathCount=" in messageContent:
+                        per.deathCount = int(messageContent.split(" ")[1])
                         await client.send_message(message.channel, "DEATH_COUNT CHANGED TO " + str(per.deathCount))
-                    if "iterations=" in message.content:
-                        per.iterations = int(message.content.split(" ")[1])
+                    if "iterations=" in messageContent:
+                        per.iterations = int(messageContent.split(" ")[1])
                         await client.send_message(message.channel, "ITERATIONS CHANGED TO " + str(per.iterations))
-                    if "averaging=" in message.content:
-                        per.averaging = message.content.split(" ")[1] == "true"
+                    if "averaging=" in messageContent:
+                        per.averaging = messageContent.split(" ")[1] == "true"
                         await client.send_message(message.channel, "FLAG _AVERAGING CHANGED TO " + str(per.averaging))
-                    if "minimumScore=" in message.content:
-                        per.minimumScore = int(message.content.split(" ")[1])
+                    if "minimumScore=" in messageContent:
+                        per.minimumScore = int(messageContent.split(" ")[1])
                         await client.send_message(message.channel, "minimum_SCORE CHANGED TO " + str(per.minimumScore))
                 
                 else:
-                    await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author) + "\" IS NOT AUTHORISED TO EXECUTE DEBUG COMMANDS")
+                    await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author.mention) + "\" IS NOT AUTHORISED TO EXECUTE DEBUG COMMANDS")
             
             
             else:  # standard text
@@ -416,6 +427,6 @@ async def on_message(message):
     except:
         print("FATAL_ERROR:\nUNKNOWN")
 
-botName, token, admins = loadDetails()  # this should fetch all the details
+#botName, token, admins = loadDetails()  # this should fetch all the details #you don't need this <- -satanicbanana
         
 client.run(token)
