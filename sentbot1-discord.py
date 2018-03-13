@@ -330,7 +330,7 @@ async def on_ready():
 async def on_message(message):
     messageContent = message.content #editable message content block
     commandMode = -1 # determines the command being used. If it is not a command, the mode is -1.
-    prefixes = [".", "!", "$"]
+    prefixes = ["!", "d.", ".", "$"]
     for i in range(0, len(prefixes): #iterate through each item in the prefix group until you hit the one it is (or not) 
         if messageContent.startswith(prefixes[i]):
             commandMode = i # set the command mode
@@ -346,7 +346,7 @@ async def on_message(message):
             await client.send_message(message.author.mention, "FATAL_ERROR:\nDM's ARE UNSUPPORTED")
             # they don't have to be :^) just use the user ID - will work on this
         else:
-            if commandMode == 2:  # admin commands
+            if commandMode == 3:  # admin commands
                 if str(message.author) in admins:
                     if messageContent == "SHUTDOWN":
                         await client.send_message(message.channel, ":wave:")
@@ -358,25 +358,15 @@ async def on_message(message):
                         await client.send_message(message.channel, newStaff + " added to staff list")
                         
                 else:
-                    await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author.mention) + "\" IS NOT AUTHORISED TO ACCESS SERVER ADMINISTRATION COMMANDS")
-                    
-                    
-            elif commandMode == 0:  # normal/staff commands
-                if str(message.author) in admins or str(message.author) in per.staff:
-                    if messageContent == "LIST_WORDS":
-                        stro = "ALL_WORDS\n\n"
-                        for word in per.dictionary:
-                            stro += "(" + str(len(word.prev)) + ") " + word.text + " (" + str(len(word.next)) + ")\n"
-                        await client.send_message(message.channel, stro)
-                        
-                    elif messageContent == "CLEAR_DICTIONARY":
+                    await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author.mention) + "\" IS NOT AUTHORISED TO ACCESS ADMINISTRATION COMMANDS")
+                   
+                   
+            elif commandMode == 2:  # staff commands
+                if str(message.author) in admins or str(message.author) in per.staff:                       
+                    if messageContent == "CLEAR_DICTIONARY":
                         per.dictionary = []
                         await client.send_message(message.channel, "DICTIONARY CLEARED")
-                        
-                    elif messageContent == "DUMP_STATS":
-                        stri = "FULL STAT LIST\n\n"
-                        await client.send_message(message.channel, stri + str(per.stackSize) + "\n" + str(per.deathCount) + "\n" + str(per.iterations) + "\n" + str(per.averaging) + "\n" + str(per.minimumScore) + "\n\n" + str(per.averageSentenceLength))
-                        
+
                     elif messageContent == "CHANNEL_MODE":
                         per.serverMode = False
                         await client.send_message(message.channel, "CHANNEL MODE ACTIVE")     
@@ -386,8 +376,9 @@ async def on_message(message):
                         await client.send_message(message.channel, "SERVER MODE ACTIVE")
                         
                 else:
-                    await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author.mention) + "\" IS NOT AUTHORISED TO ACCESS COMMANDS")
+                    await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author.mention) + "\" IS NOT AUTHORISED TO ACCESS STAFF COMMANDS")
                     
+                   
             elif commandMode == 1:  # debug commands
                 if str(message.author) in admins or str(message.author) in per.staff:
                     if messageContent.startswith("stackSize="):
@@ -408,8 +399,20 @@ async def on_message(message):
                 
                 else:
                     await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author.mention) + "\" IS NOT AUTHORISED TO EXECUTE DEBUG COMMANDS")
+                    
+                   
+            elif commandMode == 0:  # normal commands
+                if messageContent == "LIST_WORDS":
+                    stro = "ALL_WORDS\n\n"
+                    for word in per.dictionary:
+                        stro += "(" + str(len(word.prev)) + ") " + word.text + " (" + str(len(word.next)) + ")\n"
+                    await client.send_message(message.channel, stro)
+
+                elif messageContent == "DUMP_STATS":
+                    stri = "FULL STAT LIST\n\n"
+                    await client.send_message(message.channel, stri + str(per.stackSize) + "\n" + str(per.deathCount) + "\n" + str(per.iterations) + "\n" + str(per.averaging) + "\n" + str(per.minimumScore) + "\n\n" + str(per.averageSentenceLength))
             
-            
+                   
             else:  # standard text
                 await client.send_typing(message.channel)
                 per = determinePersonality(message)
