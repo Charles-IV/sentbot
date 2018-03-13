@@ -308,10 +308,10 @@ def loadDetails():
         exit()
     
     botName = f.readline().strip('\n')
-    token = f.readline().strip('\n')  # if I remember correctly, this auto-reads the next line
+    token = f.readline().strip('\n')  # auto-reads the next line
 
     admins = f.readline().split(',')
-    admins[-1] = admins[-1].strip('\n')
+    admins[-1] = admins[-1].strip('\n')  # strip the newline off the end of the last admin
     
     return botName, token, admins
 
@@ -344,15 +344,15 @@ async def on_message(message):
             return  # do nothing - so i dont have to put it all in if str(message.author) != botName:
         elif per == "dm":  # if it's a DM
             await client.send_message(message.author.mention, "FATAL_ERROR:\nDM's ARE UNSUPPORTED")
-            # they don't have to be :^) just use the user ID
+            # they don't have to be :^) just use the user ID - will work on this
         else:
-            if commandMode == 2:
+            if commandMode == 2:  # admin commands
                 if str(message.author) in admins:
                     if messageContent == "SHUTDOWN":
                         await client.send_message(message.channel, ":wave:")
                         os._exit(1)
                     
-                    elif messageContent.startswith("STAFF_ADD"): # this just makes sure that we don't have '$abababa STAFF_ADD AASASA' adding "STAFF_ADD AASASA" to the staff list 
+                    elif messageContent.startswith("STAFF_ADD"):
                         newStaff = str(messageContent.split(" ", 1)[1])
                         per.staff.append(newStaff)
                         await client.send_message(message.channel, newStaff + " added to staff list")
@@ -361,8 +361,7 @@ async def on_message(message):
                     await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author.mention) + "\" IS NOT AUTHORISED TO ACCESS SERVER ADMINISTRATION COMMANDS")
                     
                     
-            # WHY DO YOU HAVE ORDERING OF 2 -> 0 -> 1 :ANGERY:
-            elif commandMode == 0:
+            elif commandMode == 0:  # normal/staff commands
                 if str(message.author) in admins or str(message.author) in per.staff:
                     if messageContent == "LIST_WORDS":
                         stro = "ALL_WORDS\n\n"
@@ -389,21 +388,21 @@ async def on_message(message):
                 else:
                     await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author.mention) + "\" IS NOT AUTHORISED TO ACCESS COMMANDS")
                     
-            elif commandMode == 1:
+            elif commandMode == 1:  # debug commands
                 if str(message.author) in admins or str(message.author) in per.staff:
-                    if "stackSize=" in messageContent:
+                    if messageContent.startswith("stackSize="):
                         per.stackSize = int(messageContent.split(" ")[1])
                         await client.send_message(message.channel, "STACK_SIZE CHANGED TO " + str(per.stackSize))
-                    if "deathCount=" in messageContent:
+                    if messageContent.startswith("deathCount="):
                         per.deathCount = int(messageContent.split(" ")[1])
                         await client.send_message(message.channel, "DEATH_COUNT CHANGED TO " + str(per.deathCount))
-                    if "iterations=" in messageContent:
+                    if messageContent.startswith("iterations="):
                         per.iterations = int(messageContent.split(" ")[1])
                         await client.send_message(message.channel, "ITERATIONS CHANGED TO " + str(per.iterations))
-                    if "averaging=" in messageContent:
+                    if messageContent.startswith("averaging="):
                         per.averaging = messageContent.split(" ")[1] == "true"
                         await client.send_message(message.channel, "FLAG _AVERAGING CHANGED TO " + str(per.averaging))
-                    if "minimumScore=" in messageContent:
+                    if messageContent.startswith("minimumScore="):
                         per.minimumScore = int(messageContent.split(" ")[1])
                         await client.send_message(message.channel, "minimum_SCORE CHANGED TO " + str(per.minimumScore))
                 
@@ -427,6 +426,5 @@ async def on_message(message):
     except:
         print("FATAL_ERROR:\nUNKNOWN")
 
-#botName, token, admins = loadDetails()  # this should fetch all the details #you don't need this <- -satanicbanana
         
 client.run(token)
