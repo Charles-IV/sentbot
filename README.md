@@ -51,7 +51,8 @@ There are currently 4 tiers of commands - standard, staff, debug and admin.
 
 An admin can run any command, staff can run any but admin commands, and nermal users can only run standard commands.
 
-The prefixes (yes I've got some now!) are as follows
+The prefixes (yes I've got some now!) are as follows:
+
 | Command type: | Standard | Staff | Debug | Admin |
 | ------------- |:--------:|:-----:|:-----:|:-----:|
 | **Prefix:**   | `!`      | `.`   | `d.`  | `$`   |
