@@ -28,7 +28,14 @@ You can edit and save this file while the bot is still running - no nead to rest
 
 Then run it (linux - `python3 sentbot1-discord.py`) and your bot should go online. Be sure to credit me and @SatanicBanana - remember that he gave me the code and let me upload it, and I'm making the code public.
 
-The bot currently has different personalities (word sets) in each channel. To change this, run `SERVER_MODE`. To change it back again, run `CHANNEL_MODE`.
+The bot currently has different personalities (word sets) in each channel. To change this, run `.SERVER_MODE`. To change it back again, run `.CHANNEL_MODE`.
+
+
+About staff and admins:
+
+Admins are across all personalities and servers that bot is in, however two different people with their own `discord-details.txt` file do not share admins. They can only be assigned by those with access to the file and can run all commands.
+
+Staff can run some administrative commands on the personality (either channel or server) they are added to. They are assigned by an admin, and cannot run commands such as adding or removing staff or shutting down the bot. Only admins can run these. They can run more commands than normal users (which can only run simple commands such as `!LIST_WORDS`.
 
 ## Commands
 
@@ -38,4 +45,15 @@ Currently, there are no commands for the command line version, although when I g
 
 ### Discord bot
 
-There are loads. When I understand them, I'm begin documenting them. (or you could make a pr?!)
+There are loads. When I understand them, I'll begin documenting them. (or you could make a pr?!)
+
+There are currently 4 tiers of commands - standard, staff, debug and admin.
+
+An admin can run any command, staff can run any but admin commands, and nermal users can only run standard commands.
+
+The prefixes (yes I've got some now!) are as follows
+| Command type: | Standard | Staff | Debug | Admin |
+| ------------- |:--------:|:-----:|:-----:|:-----:|
+| **Prefix:**   | `!`      | `.`   | `d.`  | `$`   |
+
+Standard text for SentBot to read and make sentences from has no prefix.
