@@ -360,7 +360,7 @@ async def on_message(message):
                     elif messageContent.startswith("STAFF_REMOVE"):
                         delStaff = str(messageContent.split(" ", 1)[1])
                         per.staff.remove(delStaff)
-                        await client.send_message(message.channel, delStaff + " remmoved from staff list")
+                        await client.send_message(message.channel, delStaff + " removed from staff list")
                         
                 else:
                     await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author.mention) + "\" IS NOT AUTHORISED TO ACCESS ADMINISTRATION COMMANDS")
