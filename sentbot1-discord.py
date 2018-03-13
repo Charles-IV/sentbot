@@ -331,7 +331,7 @@ async def on_message(message):
     messageContent = message.content #editable message content block
     commandMode = -1 # determines the command being used. If it is not a command, the mode is -1.
     prefixes = ["!", "d.", ".", "$"]
-    for i in range(0, len(prefixes): #iterate through each item in the prefix group until you hit the one it is (or not) 
+    for i in range(0, len(prefixes)): #iterate through each item in the prefix group until you hit the one it is (or not) 
         if messageContent.startswith(prefixes[i]):
             commandMode = i # set the command mode
             messageContent = messageContent.lstrip(prefixes[i]) # remove the command prefix from the command
@@ -430,4 +430,6 @@ async def on_message(message):
         print("FATAL_ERROR:\nUNKNOWN")
 
         
+botName, token, admins = loadDetails()  # this is needed - for the token
+
 client.run(token)
