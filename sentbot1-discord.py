@@ -357,6 +357,11 @@ async def on_message(message):
                         per.staff.append(newStaff)
                         await client.send_message(message.channel, newStaff + " added to staff list")
                         
+                    elif messageContent.startswith("STAFF_REMOVE"):
+                        delStaff = str(messageContent.split(" ", 1)[1])
+                        per.staff.remove(delStaff)
+                        await client.send_message(message.channel, delStaff + " remmoved from staff list")
+                        
                 else:
                     await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author.mention) + "\" IS NOT AUTHORISED TO ACCESS ADMINISTRATION COMMANDS")
                    
@@ -374,6 +379,12 @@ async def on_message(message):
                     elif messageContent == "SERVER_MODE":
                         per.serverMode = True
                         await client.send_message(message.channel, "SERVER MODE ACTIVE")
+                        
+                    elif messageContent == "LIST_STAFF":
+                        stru = "STAFF LIST:\n\n"
+                        for staff in per.staff:
+                            stru += staff + "\n"
+                        await client.send_message(message.channel, stru)   
                         
                 else:
                     await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author.mention) + "\" IS NOT AUTHORISED TO ACCESS STAFF COMMANDS")
