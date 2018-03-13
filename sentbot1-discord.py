@@ -362,6 +362,9 @@ async def on_message(message):
                         per.staff.remove(delStaff)
                         await client.send_message(message.channel, delStaff + " removed from staff list")
                         
+                    else:
+                        await client.send_message(message.channel, "FATAL_ERROR:\nCOMMAND NOT FOUND")
+                        
                 else:
                     await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author.mention) + "\" IS NOT AUTHORISED TO ACCESS ADMINISTRATION COMMANDS")
                    
@@ -384,7 +387,10 @@ async def on_message(message):
                         stru = "STAFF LIST:\n\n"
                         for staff in per.staff:
                             stru += staff + "\n"
-                        await client.send_message(message.channel, stru)   
+                        await client.send_message(message.channel, stru)
+                        
+                    else:
+                        await client.send_message(message.channel, "FATAL_ERROR:\nCOMMAND NOT FOUND")
                         
                 else:
                     await client.send_message(message.channel, "FATAL_ERROR:\nUSER-TYPE \"" + str(message.author.mention) + "\" IS NOT AUTHORISED TO ACCESS STAFF COMMANDS")
@@ -422,6 +428,9 @@ async def on_message(message):
                 elif messageContent == "DUMP_STATS":
                     stri = "FULL STAT LIST\n\n"
                     await client.send_message(message.channel, stri + str(per.stackSize) + "\n" + str(per.deathCount) + "\n" + str(per.iterations) + "\n" + str(per.averaging) + "\n" + str(per.minimumScore) + "\n\n" + str(per.averageSentenceLength))
+                    
+                else:
+                    await client.send_message(message.channel, "FATAL_ERROR:\nCOMMAND NOT FOUND")
             
                    
             else:  # standard text
