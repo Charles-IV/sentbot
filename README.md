@@ -2,6 +2,9 @@
 ### Chat bot created by @SatanicBanana
 
  > see the discord bot in action at https://discord.gg/UCftebN! - remember - be sensible with it.
+ 
+ > add mine to your server! - https://discordapp.com/oauth2/authorize?&client_id=421772471713267713&scope=bot&permissions=0
+
 
 ## Usage
 
