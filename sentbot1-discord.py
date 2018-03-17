@@ -9,6 +9,7 @@ import os
 from colorama import init, AnsiToWin32, Fore, Back, Style
 import discord
 import asyncio
+import pickle
 
 init(autoreset=False)
 
@@ -315,6 +316,16 @@ def loadDetails():
     
     return botName, token, admins
 
+def save():
+    f = open('save.pkl', 'wb')
+    pickle.dump(personalities, f, -1)  # -1 is pickle.HIGHEST_PROTOCOL thing
+    f.close()
+        
+        
+def read():
+    f = open('save.pkl', 'rb')
+    personalities = pickle.load(f)
+    f.close()
     
 
 client = discord.Client()
@@ -429,6 +440,15 @@ async def on_message(message):
                     stri = "FULL STAT LIST\n\n"
                     await client.send_message(message.channel, stri + str(per.stackSize) + "\n" + str(per.deathCount) + "\n" + str(per.iterations) + "\n" + str(per.averaging) + "\n" + str(per.minimumScore) + "\n\n" + str(per.averageSentenceLength))
                     
+                elif messageContent == "SAVE":
+                    save()
+                    await client.send_message(message.channel, "SAVED. (i hope)")
+                    
+                elif messageContent == "RESTORE":
+                    read()
+                    await client.send_message(message.channel, "RESTORED. (i hope)")
+                    
+                    
                 else:
                     await client.send_message(message.channel, "FATAL_ERROR:\nCOMMAND NOT FOUND")
             
@@ -452,4 +472,8 @@ async def on_message(message):
         
 botName, token, admins = loadDetails()  # this is needed - for the token
 
+if os.path.exists('save.pkl'):  # if there is a save file
+    print("save file found")
+    read()  # restore it
+    
 client.run(token)
