@@ -383,12 +383,6 @@ async def on_message(message):
                         per.serverMode = True
                         await client.send_message(message.channel, "SERVER MODE ACTIVE")
                         
-                    elif messageContent == "LIST_STAFF":
-                        stru = "STAFF LIST:\n\n"
-                        for staff in per.staff:
-                            stru += staff + "\n"
-                        await client.send_message(message.channel, stru)
-                        
                     else:
                         await client.send_message(message.channel, "FATAL_ERROR:\nCOMMAND NOT FOUND")
                         
