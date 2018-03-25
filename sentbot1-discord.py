@@ -424,45 +424,45 @@ async def on_message(message):
                     await client.send_message(message.channel, stri + str(per.stackSize) + "\n" + str(per.deathCount) + "\n" + str(per.iterations) + "\n" + str(per.averaging) + "\n" + str(per.minimumScore) + "\n\n" + str(per.averageSentenceLength))
                     
                 elif messageContent == "LIST_STAFF":
-                stru = "STAFF LIST:\n\n"
-                for staff in per.staff:
-                    stru += staff + "\n"
-                await client.send_message(message.channel, stru)
-                
-            elif messageContent == "HELP" or messageContent == "help":
-                await client.send_message(message.channel, "HELPFUL HELP STUFF:\n\n" +
-                "I highly recommend checking out the project on discord for actual useful stuff: `https://github.com/Charles-IV/sentbot`\n" +
-                "Alternatively, get the list of commands and details about them with `!LIST_COMMANDS`")
-                
-            elif messageContent == "LIST_COMMANDS":
-                await client.send_message(message.channel, "COMMAND LIST: (probs out of date)\n\n" +
-                "**TYPES OF COMMAND**\n\n" +
-                "There are 4 types of command: admin, staff, debug and normal\n" +
-                "People with admin commands to the bot (not the server) can run all commands, " +
-                "staff can run staff, debug and normal commands, and"+
-                "normal users can only run normal commands.\nAdmins can add extra staff.\n\n" +
-                "**PREFIXES:**\n\n" +
-                "Admin - `$`\nStaff - `.`\nDebug - `d.`\nNormal - `!`")  # new message so it's not too long
-                await client.send_message(message.channel, "**\nACTUAL COMMANDS**:\n\n" +
-                "**Admin commands**\n" +
-                "`$SHUTDOWN`\nBrings the bot offline. The bot owner will have to bring it back online\n\n" +
-                "`$STAFF_ADD <StaffName#0000>`\nChange the bits in <> as appropiate. Adds a staff member to the list of staff for that personality.\n\n" +
-                "`$STAFF_REMOVE <StaffName#0000>`\nChange the bits in <> as appropiate. Removes a staff member to the list of staff for that personality.\n\n" +
-                "**Staff commands**\n" +
-                "`.CLEAR_DICTIONARY`\nDelete all words in the dictionary for that personality.\n\n" +
-                "`.CHANNEL_MODE`\nSwitches the personalities in that server to channel mode - each channel has a different set of words and staff. This is default.\n\n" +
-                "`.SERVER_MODE`\nSwitches to one personality shared across the whole server - words and staff are the same for all channels.\n\n" +
-                "**Debug commands**\nidk what all these do. When I do, I'll (hopefully) update this.\n" +
-                "`d.stackSize= <>`\n`d.deathCount= <>`\n`d.iterations= <>`\n`d.averaging= <>`\n`d.minimumScore`\n\n" +
-                "**Normal commands**\n" +
-                "`!LIST_WORDS`\nOutputs a list of the words in that personality, also gives details on the number of words before and after it in the sentence it was provided with.\n\n" +
-                "`!DUMP_STATS`\nOutputs (some of) the stats. I'll probs change this one.\n\n" +
-                "`!SAVE`\nSaves all current personalities and their words to a file somewhere. (UNDER DEVELOPMENT)\n\n" +
-                "`!RESTORE`\nRestores the personalities from the file. This should probably be an admin command. (UNER DEVELOPMENT)\n\n" +
-                "`!LIST_STAFF`\nOutputs a list of staff for that personality\n\n" +
-                "`!HELP`\nTries to help you by not telling you much.\n\n" +
-                "`!LIST_COMMANDS`\nOutputs a list of commands. You know, the thing I've just done. You better have got that. Come on.")
-                    
+                    stru = "STAFF LIST:\n\n"
+                    for staff in per.staff:
+                        stru += staff + "\n"
+                    await client.send_message(message.channel, stru)
+
+                elif messageContent == "HELP" or messageContent == "help":
+                    await client.send_message(message.channel, "HELPFUL HELP STUFF:\n\n" +
+                    "I highly recommend checking out the project on discord for actual useful stuff: `https://github.com/Charles-IV/sentbot`\n" +
+                    "Alternatively, get the list of commands and details about them with `!LIST_COMMANDS`")
+
+                elif messageContent == "LIST_COMMANDS":
+                    await client.send_message(message.channel, "COMMAND LIST: (probs out of date)\n\n" +
+                    "**TYPES OF COMMAND**\n\n" +
+                    "There are 4 types of command: admin, staff, debug and normal\n" +
+                    "People with admin commands to the bot (not the server) can run all commands, " +
+                    "staff can run staff, debug and normal commands, and"+
+                    "normal users can only run normal commands.\nAdmins can add extra staff.\n\n" +
+                    "**PREFIXES:**\n\n" +
+                    "Admin - `$`\nStaff - `.`\nDebug - `d.`\nNormal - `!`")  # new message so it's not too long
+                    await client.send_message(message.channel, "**\nACTUAL COMMANDS**:\n\n" +
+                    "**Admin commands**\n" +
+                    "`$SHUTDOWN`\nBrings the bot offline. The bot owner will have to bring it back online\n\n" +
+                    "`$STAFF_ADD <StaffName#0000>`\nChange the bits in <> as appropiate. Adds a staff member to the list of staff for that personality.\n\n" +
+                    "`$STAFF_REMOVE <StaffName#0000>`\nChange the bits in <> as appropiate. Removes a staff member to the list of staff for that personality.\n\n" +
+                    "**Staff commands**\n" +
+                    "`.CLEAR_DICTIONARY`\nDelete all words in the dictionary for that personality.\n\n" +
+                    "`.CHANNEL_MODE`\nSwitches the personalities in that server to channel mode - each channel has a different set of words and staff. This is default.\n\n" +
+                    "`.SERVER_MODE`\nSwitches to one personality shared across the whole server - words and staff are the same for all channels.\n\n" +
+                    "**Debug commands**\nidk what all these do. When I do, I'll (hopefully) update this.\n" +
+                    "`d.stackSize= <>`\n`d.deathCount= <>`\n`d.iterations= <>`\n`d.averaging= <>`\n`d.minimumScore`\n\n" +
+                    "**Normal commands**\n" +
+                    "`!LIST_WORDS`\nOutputs a list of the words in that personality, also gives details on the number of words before and after it in the sentence it was provided with.\n\n" +
+                    "`!DUMP_STATS`\nOutputs (some of) the stats. I'll probs change this one.\n\n" +
+                    "`!SAVE`\nSaves all current personalities and their words to a file somewhere. (UNDER DEVELOPMENT)\n\n" +
+                    "`!RESTORE`\nRestores the personalities from the file. This should probably be an admin command. (UNER DEVELOPMENT)\n\n" +
+                    "`!LIST_STAFF`\nOutputs a list of staff for that personality\n\n" +
+                    "`!HELP`\nTries to help you by not telling you much.\n\n" +
+                    "`!LIST_COMMANDS`\nOutputs a list of commands. You know, the thing I've just done. You better have got that. Come on.")
+
                 else:
                     await client.send_message(message.channel, "FATAL_ERROR:\nCOMMAND NOT FOUND")
             
