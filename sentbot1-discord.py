@@ -343,7 +343,7 @@ async def on_message(message):
         if str(message.author) == botName:
             return  # do nothing - so i dont have to put it all in if str(message.author) != botName:
         elif per == "dm":  # if it's a DM
-            await client.send_message(message.author.mention, "FATAL_ERROR:\nDM's ARE UNSUPPORTED")
+            await client.send_message(message.author, "FATAL_ERROR:\nDM's ARE UNSUPPORTED")
             # they don't have to be :^) just use the user ID - will work on this
         else:
             if commandMode == 3:  # admin commands
