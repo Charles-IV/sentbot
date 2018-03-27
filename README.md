@@ -61,3 +61,17 @@ The prefixes (yes I've got some now!) are as follows:
 | **Prefix:**   | `!`      | `.`   | `d.`  | `$`   |
 
 Standard text for SentBot to read and make sentences from has no prefix.
+
+
+### Discord commands
+
+| Prefix:   | Command               | Usage                             | Action    |
+|:---------:| --------------------- | --------------------------------- | --------- |
+| `$`       | **Admin commands**    |                                   |           |
+| `$`       | `SHUTDOWN`            | `$SHUTDOWN`                       | Brings the bot offline. The bot owner will have to bring it back online |
+| `$`       | `STAFF_ADD`           | `$STAFF_ADD <StaffName#0000>`     | Adds a staff member to the list of staff for that personality |
+| `$`       | `STAFF_REMOVE`        | `$STAFF_REMOVE <StaffName#0000>`  | Removes a staff member to the list of staff for that personality |
+| `.`   | **Staff commands**    |                       |       |
+| `.`   | `CLEAR_DICTIONARY`    | `.CLEAR_DICTIONARY`   | Delete all words in the dictionary for that personality
+| `.`   | `CHANNEL_MODE`        | `.CHANNEL_MODE`       | Switches the personalities in that server to channel mode - each channel has a different set of words and staff. This is default. |
+| `.`   | `SERVER_MODE`         | `.SERVER_MODE`        | Switches to one personality shared across the whole server - words and staff are the same for all channels. |
