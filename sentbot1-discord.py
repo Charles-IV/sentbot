@@ -456,14 +456,14 @@ async def on_message(message):
                     "`.CHANNEL_MODE`\nSwitches the personalities in that server to channel mode - each channel has a different set of words and staff. This is default.\n\n" +
                     "`.SERVER_MODE`\nSwitches to one personality shared across the whole server - words and staff are the same for all channels.\n\n" +
                     "**Debug commands**\nidk what all these do. When I do, I'll (hopefully) update this.\n" +
-                    "`d.stackSize= <>`\n`d.deathCount= <>`\n`d.iterations= <>`\n`d.averaging= <>`\n`d.minimumScore`\n\n" +
+                    "`d.stackSize= <>`\n`d.deathCount= <>`\n`d.iterations= <>`\n`d.averaging= <>`\n`d.minimumScore= <>`\n\n" +
                     "**Normal commands**\n" +
                     "`!PING`\npong\n\n" +
                     "`!LIST_WORDS`\nOutputs a list of the words in that personality, also gives details on the number of words before and after it in the sentence it was provided with.\n\n" +
                     "`!DUMP_STATS`\nOutputs (some of) the stats. I'll probs change this one.\n\n" +
                     "`!SAVE`\nSaves all current personalities and their words to a file somewhere. (UNDER DEVELOPMENT)\n\n" +
                     "`!RESTORE`\nRestores the personalities from the file. This should probably be an admin command. (UNER DEVELOPMENT)\n\n" +
-                    "`!LIST_STAFF`\nOutputs a list of staff for that personality\n\n" +
+                    "`!LIST_STAFF`\nOutputs a list of staff for that personality.\n\n" +
                     "`!HELP`\nTries to help you by not telling you much.\n\n" +
                     "`!LIST_COMMANDS`\nOutputs a list of commands. You know, the thing I've just done. You better have got that. Come on.")
 

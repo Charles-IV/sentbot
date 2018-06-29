@@ -72,6 +72,21 @@ Standard text for SentBot to read and make sentences from has no prefix.
 | `STAFF_ADD`           | `$STAFF_ADD <StaffName#0000>`     | Adds a staff member to the list of staff for that personality |
 | `STAFF_REMOVE`        | `$STAFF_REMOVE <StaffName#0000>`  | Removes a staff member to the list of staff for that personality |
 | **Staff commands**    |                       |       |
-| `CLEAR_DICTIONARY`    | `.CLEAR_DICTIONARY`   | Delete all words in the dictionary for that personality
+| `CLEAR_DICTIONARY`    | `.CLEAR_DICTIONARY`   | Delete all words in the dictionary for that personality |
 | `CHANNEL_MODE`        | `.CHANNEL_MODE`       | Switches the personalities in that server to channel mode - each channel has a different set of words and staff. This is default. |
 | `SERVER_MODE`         | `.SERVER_MODE`        | Switches to one personality shared across the whole server - words and staff are the same for all channels. |
+| **Debug commands**    |                       |       |
+| `d.stackSize`         | `d.stackSize= <>`     |       |
+| `d.deathCount`        | `d.deathCount= <>`    |       |
+| `d.iterations`        | `d.iterations= <>`    |       |
+| `d.averaging`         | `d.averaging= <>`     |       |
+| `d.minimumScore`      | `d.minimumScore= <>`  |       |
+| **Standard commands** |                   |       |
+| `PING`                | `!PING`           | pong |
+| `LIST_WORDS`          | `!LIST_WORDS`     | Outputs a list of the words in that personality, also gives details on the number of words before and after it in the sentence it was provided with. |
+| `DUMP_STATS`          | `!DUMP_STATS`     | Outputs (some of) the stats. I'll probs change this one. |
+| `SAVE`                | `!SAVE`           | Saves all current personalities and their words to a file somewhere. *(UNDER DEVELOPMENT)* |
+| `RESTORE`             | `!RESTORE`        | Restores the personalities from the file. This should probably be an admin command. *(UNER DEVELOPMENT)* |
+| `LIST_STAFF`          | `!LIST_STAFF`     | Outputs a list of staff for that personality. |
+| `HELP`                | `!HELP`           | Tries to help you by not telling you much. |
+| `LIST_COMMANDS`       | `!LIST_COMMANDS`  | Outputs a list of commands similar to this. |
