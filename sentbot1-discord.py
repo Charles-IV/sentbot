@@ -413,7 +413,10 @@ async def on_message(message):
                     
                    
             elif commandMode == 0:  # normal commands
-                if messageContent == "LIST_WORDS":
+                if messageContent == "PING":
+                    await client.send_message(message.channel, "pong")
+                    
+                elif messageContent == "LIST_WORDS":
                     stro = "ALL_WORDS\n\n"
                     for word in per.dictionary:
                         stro += "(" + str(len(word.prev)) + ") " + word.text + " (" + str(len(word.next)) + ")\n"
@@ -455,6 +458,7 @@ async def on_message(message):
                     "**Debug commands**\nidk what all these do. When I do, I'll (hopefully) update this.\n" +
                     "`d.stackSize= <>`\n`d.deathCount= <>`\n`d.iterations= <>`\n`d.averaging= <>`\n`d.minimumScore`\n\n" +
                     "**Normal commands**\n" +
+                    "`!PING`\npong\n\n" +
                     "`!LIST_WORDS`\nOutputs a list of the words in that personality, also gives details on the number of words before and after it in the sentence it was provided with.\n\n" +
                     "`!DUMP_STATS`\nOutputs (some of) the stats. I'll probs change this one.\n\n" +
                     "`!SAVE`\nSaves all current personalities and their words to a file somewhere. (UNDER DEVELOPMENT)\n\n" +
